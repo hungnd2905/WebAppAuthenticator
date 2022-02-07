@@ -3,6 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
+const encrypt = require("mongoose-encryption");
 
 const app = express();
 app.use(express.static("public"));
@@ -13,10 +14,16 @@ app.use(bodyParser.urlencoded({
 
 mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
 
-const userSchema = {
+const userSchema = new mongoose.Schema ({
   email: String,
   password: String
-};
+});
+
+//use long string mySecret to encrypt data
+const mySecret = "thisismylittlesecret";
+// during "save", documents are encrypted and then signed. During "find",
+// documents are authenticated and then decrypted.
+userSchema.plugin(encrypt,{secret: mySecret, encryptedFields: ["password"] });
 
 const User = new mongoose.model("User",userSchema);
 
