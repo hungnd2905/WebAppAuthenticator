@@ -1,4 +1,5 @@
 //jshint esversion:6
+require('dotenv').config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -19,11 +20,11 @@ const userSchema = new mongoose.Schema ({
   password: String
 });
 
-//use long string mySecret to encrypt data
-const mySecret = "thisismylittlesecret";
+
+
 // during "save", documents are encrypted and then signed. During "find",
 // documents are authenticated and then decrypted.
-userSchema.plugin(encrypt,{secret: mySecret, encryptedFields: ["password"] });
+userSchema.plugin(encrypt,{secret: process.env.SECRET, encryptedFields: ["password"] });
 
 const User = new mongoose.model("User",userSchema);
 
