@@ -41,7 +41,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 //connect to local MongoDB "userDB"
-mongoose.connect("mongodb://localhost:27017/userDB", {useNewUrlParser: true});
+mongoose.connect("mongodb+srv://"+process.env.MONGODB_USERNAME+":"+process.env.MONGODB_PASSWORD+"@cluster0.6jrin.mongodb.net/userDB", {useNewUrlParser: true});
 
 //create Mongo Schema
 const userSchema = new mongoose.Schema ({
@@ -194,6 +194,11 @@ app.post("/login", function(req,res){
   })
 });
 
-app.listen(3000, function(){
-  console.log("Server started on port 3000.");
-})
+let port = process.env.PORT;
+if (port == null || port ==""){
+  port = 3000;
+}
+
+app.listen(port, function() {
+  console.log("Server started on successfully");
+});
