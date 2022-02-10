@@ -77,7 +77,14 @@ passport.deserializeUser(function(id, done){
 passport.use(new GoogleStrategy({
     clientID: process.env.CLIENT_ID,
     clientSecret: process.env.CLIENT_SECRET,
+
+    //localhost:
     callbackURL: "http://localhost:3000/auth/google/secrets",
+
+    //Deploy in Heroku:
+    //https://console.developers.google.com/ change URI in Credentials to https://rocky-island-61335.herokuapp.com
+    //callbackURL: "https://rocky-island-61335.herokuapp.com/auth/google/secrets"
+
     //fix error from "Google +"
     userProfileURL: "https://www.googleapis.com/oauth2/v3/userinfo"
   },
